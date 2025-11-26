@@ -1,0 +1,301 @@
+STYCLY - PROJECT STRUCTURE
+==========================
+
+stycly/
+│
+├── 📄 run.py                          # Application entry point - START HERE!
+├── 📄 requirements.txt                # Python dependencies
+├── 📄 .env.example                    # Environment variables template
+├── 📄 .gitignore                      # Git ignore rules
+├── 📄 README.md                       # Complete documentation
+├── 📄 QUICKSTART.md                   # 5-minute setup guide
+├── 📄 PROJECT_SUMMARY.md              # This summary
+│
+├── 📁 app/                            # Main application package
+│   │
+│   ├── 📄 __init__.py                 # App factory & configuration
+│   ├── 📄 models.py                   # Database models (5 models)
+│   ├── 📄 utils.py                    # Utilities (email, decorators)
+│   │
+│   ├── 📁 routes/                     # Route blueprints
+│   │   ├── 📄 auth.py                 # Login, register, password reset
+│   │   ├── 📄 main.py                 # Homepage, contact
+│   │   ├── 📄 wardrobe.py             # Wardrobe CRUD operations
+│   │   ├── 📄 shop.py                 # Catalog, cart, filters
+│   │   ├── 📄 orders.py               # Rental requests & confirmation
+│   │   └── 📄 api.py                  # AJAX API endpoints
+│   │
+│   ├── 📁 templates/                  # Jinja2 HTML templates
+│   │   ├── 📄 base.html               # Base template with nav & footer
+│   │   ├── 📄 index.html              # Main single-page layout
+│   │   ├── 📄 login.html              # Login page
+│   │   ├── 📄 register.html           # Registration page
+│   │   ├── 📄 forgot_password.html    # Password recovery
+│   │   ├── 📄 reset_password.html     # New password form
+│   │   └── 📄 order_confirmation.html # Order success page
+│   │
+│   └── 📁 static/                     # Static assets
+│       │
+│       ├── 📁 css/
+│       │   └── 📄 style.css           # Complete responsive CSS (1000+ lines)
+│       │
+│       ├── 📁 js/
+│       │   ├── 📄 main.js             # Navigation, cart, general
+│       │   ├── 📄 products.js         # Catalog filtering & search
+│       │   └── 📄 wardrobe.js         # Wardrobe management
+│       │
+│       └── 📁 uploads/                # User-uploaded images
+│           └── .gitkeep
+│
+└── 📁 instance/                       # Instance-specific files (auto-created)
+    └── stycly.db                      # SQLite database (auto-created)
+
+
+SECTIONS IN INDEX.HTML
+======================
+
+1. 🏠 HERO
+   - Welcome message
+   - Call-to-action buttons
+   - Feature highlights
+
+2. 👔 PRODUCTS
+   - Search bar
+   - Category/size/age filters
+   - Product grid
+   - Add to cart
+
+3. 🔄 HOW IT WORKS
+   - 4-step process
+   - Icons and descriptions
+
+4. 🌱 ABOUT US
+   - Brand story
+   - Values and mission
+   - Sustainability focus
+
+5. 📧 CONTACT
+   - Contact form
+   - Contact information
+   - Business hours
+
+6. 👤 PRIVATE WARDROBE (logged in only)
+   - Add new items form
+   - Wardrobe items grid
+   - Edit/delete actions
+
+7. 🛒 RENTAL REQUEST
+   - Date selection
+   - Customer information
+   - Submit order
+
+
+DATABASE SCHEMA
+===============
+
+User
+├── id
+├── name
+├── email (unique)
+├── password_hash
+├── created_at
+├── last_login_at
+├── last_item_insert_at
+├── is_active
+├── is_admin
+└── relationships → [wardrobe_items, orders]
+
+WardrobeItem
+├── id
+├── user_id (FK → User)
+├── title
+├── description
+├── category
+├── size
+├── age_range
+├── color
+├── daily_price
+├── image_path
+├── stock
+├── is_public_for_rent
+├── created_at
+├── updated_at
+└── relationships → [order_items]
+
+Order
+├── id
+├── user_id (FK → User, nullable)
+├── name
+├── email
+├── phone
+├── start_date
+├── end_date
+├── notes
+├── created_at
+├── status
+└── relationships → [items (OrderItem)]
+
+OrderItem
+├── id
+├── order_id (FK → Order)
+├── wardrobe_item_id (FK → WardrobeItem)
+├── quantity
+└── daily_price
+
+PasswordResetToken
+├── id
+├── user_id (FK → User)
+├── token
+├── created_at
+├── expires_at
+└── used
+
+
+ROUTES SUMMARY
+==============
+
+AUTH ROUTES (/auth/)
+├── GET  /register         # Registration form
+├── POST /register         # Create account
+├── GET  /login            # Login form
+├── POST /login            # Authenticate user
+├── GET  /logout           # Logout user
+├── GET  /forgot-password  # Password reset request
+├── POST /forgot-password  # Send reset email
+└── GET/POST /reset-password/<token>  # Reset password
+
+MAIN ROUTES (/)
+├── GET  /                 # Homepage (all sections)
+└── POST /contact          # Contact form submission
+
+WARDROBE ROUTES (/wardrobe/)
+├── GET  /                 # View wardrobe
+├── POST /add              # Add new item
+├── POST /edit/<id>        # Edit item
+├── POST /delete/<id>      # Delete item
+├── POST /delete-all       # Delete all items
+└── POST /delete-account   # Delete user account
+
+SHOP ROUTES (/shop/)
+├── GET  /products         # Get all products (JSON)
+├── POST /cart/add         # Add to cart
+├── POST /cart/update      # Update quantity
+├── POST /cart/remove      # Remove from cart
+├── GET  /cart/get         # Get cart contents
+└── POST /cart/clear       # Clear cart
+
+ORDER ROUTES (/orders/)
+├── POST /submit           # Submit rental request
+└── GET  /confirmation/<id>  # Order confirmation page
+
+API ROUTES (/api/)
+└── GET  /user/last-insert  # Get last item insert time
+
+
+COLOR PALETTE
+=============
+
+--col-primario:      #3A4C69  ████  Soft Navy
+--col-secondario:    #F2F4F7  ████  Light Grey
+--col-accent:        #7DB2E0  ████  Baby Blue
+--col-hover:         #1468e5  ████  Strong Blue
+--col-white:         #FFFFFF  ████  White
+--col-warm-beige:    #E8D4C0  ████  Warm Beige
+--col-accent-yellow: #F7D774  ████  Accent Yellow
+
+
+FONTS
+=====
+
+Primary:  Poppins (Google Fonts) - Clean, modern, readable
+Display:  Fredoka (Google Fonts) - Friendly, rounded, playful
+
+
+QUICK START COMMANDS
+====================
+
+1. Install dependencies:
+   $ pip install -r requirements.txt
+
+2. Configure environment:
+   $ cp .env.example .env
+   $ python -c "import secrets; print('SECRET_KEY=' + secrets.token_hex(32))" >> .env
+
+3. Run application:
+   $ python run.py
+
+4. Open browser:
+   http://localhost:5000
+
+
+DEPLOYMENT CHECKLIST
+====================
+
+☐ Set up PostgreSQL database
+☐ Update DATABASE_URI in .env
+☐ Generate new SECRET_KEY
+☐ Configure SMTP email settings
+☐ Set FLASK_DEBUG=False
+☐ Set up static file serving
+☐ Configure WSGI server (Gunicorn)
+☐ Set up domain and SSL
+☐ Test all functionality
+☐ Set up backups
+☐ Monitor logs
+
+
+FEATURES CHECKLIST
+==================
+
+✅ User registration & login
+✅ Password reset with email
+✅ Private wardrobe management
+✅ Add/edit/delete items
+✅ Image uploads
+✅ Public product catalog
+✅ Search & filters
+✅ Shopping cart
+✅ Rental date selection
+✅ Order submission
+✅ Email notifications (2 emails per order)
+✅ User dropdown with last activity
+✅ Delete wardrobe
+✅ Delete account
+✅ Responsive design
+✅ Mobile navigation
+✅ Flash messages
+✅ Form validation
+✅ Error handling
+✅ Session management
+✅ CSRF protection
+✅ Secure password hashing
+
+
+TECHNOLOGY STACK
+=================
+
+Backend:
+- Python 3.8+
+- Flask 3.0
+- SQLAlchemy (ORM)
+- SQLite (dev) / PostgreSQL (prod)
+- Werkzeug (security)
+- SMTP (email)
+
+Frontend:
+- HTML5
+- CSS3 (Responsive, Mobile-first)
+- Vanilla JavaScript (ES6+)
+- Google Fonts (Poppins, Fredoka)
+- Font Awesome (icons)
+
+Architecture:
+- Blueprint architecture
+- Application factory pattern
+- Session-based authentication
+- RESTful API endpoints
+- Jinja2 templating
+
+
+READY TO LAUNCH! 🚀
+

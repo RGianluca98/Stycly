@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">Dress Your Little Ones in Style</h1>
+            <p class="hero-subtitle">Sustainable fashion rental for kids. Special occasions, everyday magic.</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn btn-primary">Explore Collection</a>
+                <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-image-placeholder">
+                <i class="fas fa-child"></i>
+            </div>
+        </div>
+    </div>
+    <div class="hero-features">
+        <div class="feature-card">
+            <i class="fas fa-leaf"></i>
+            <h3>Sustainable</h3>
+            <p>Reduce waste, embrace circular fashion</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-euro-sign"></i>
+            <h3>Affordable</h3>
+            <p>Premium quality without the premium price</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-rotate"></i>
+            <h3>Flexible</h3>
+            <p>Rent for days, weeks, or special events</p>
+        </div>
+    </div>
+</section>
+
+<!-- Products / Catalog Section -->
+<section id="products" class="section products-section">
+    <div class="container">
+        <h2 class="section-title">Our Collection</h2>
+        <p class="section-subtitle">Curated outfits for every occasion</p>
+        
+        <!-- Search and Filter Bar -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by title, color, category...">
+            </div>
+            <div class="filter-group">
+                <select id="categoryFilter" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="dress">Dresses</option>
+                    <option value="suit">Suits</option>
+                    <option value="casual">Casual</option>
+                    <option value="formal">Formal</option>
+                    <option value="party">Party</option>
+                </select>
+                <select id="ageFilter" class="filter-select">
+                    <option value="">All Ages</option>
+                    <option value="0-6m">0-6 months</option>
+                    <option value="6-12m">6-12 months</option>
+                    <option value="1-2y">1-2 years</option>
+                    <option value="2-3y">2-3 years</option>
+                    <option value="3-4y">3-4 years</option>
+                    <option value="4-6y">4-6 years</option>
+                    <option value="6-8y">6-8 years</option>
+                    <option value="8-10y">8-10 years</option>
+                </select>
+                <select id="sizeFilter" class="filter-select">
+                    <option value="">All Sizes</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here via JavaScript -->
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading products...</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="section how-it-works-section">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Four simple steps to sustainable style</p>
+        
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Browse & Choose</h3>
+                <p>Explore our curated collection of premium children's clothing. Filter by size, age, and occasion to find the perfect outfits.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>Add to Cart</h3>
+                <p>Select your favorites and add them to your cart. Choose the rental period that works best for your event or needs.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Select Dates</h3>
+                <p>Pick your rental start and end dates. We'll send you a personalized quote and confirm availability.</p>
+            </div>
+            
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Receive & Enjoy</h3>
+                <p>Get your items delivered, create beautiful memories, then simply return them. It's that easy!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section id="about" class="section about-section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2 class="section-title">About Stycly</h2>
+                <p class="about-intro">We're on a mission to make children's fashion sustainable, accessible, and joyful.</p>
+                
+                <p>Stycly was born from a simple idea: children grow fast, but beautiful clothes shouldn't end up in landfills. We created a platform where parents, photographers, and families can access premium children's clothing for any occasion, without the environmental cost of fast fashion.</p>
+                
+                <p>Our circular fashion model means each garment gets multiple lives, reducing waste and making sustainable choices easy and affordable. Whether you need an outfit for a family photo shoot, a wedding, a birthday party, or just want to try new styles without commitment, we're here to help.</p>
+                
+                <div class="about-values">
+                    <div class="value-item">
+                        <i class="fas fa-recycle"></i>
+                        <h4>Circular Economy</h4>
+                        <p>Every rental reduces textile waste and supports sustainable consumption</p>
+                    </div>
+                    <div class="value-item">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <h4>Quality First</h4>
+                        <p>We curate only the best, ensuring every piece meets our high standards</p>
+                    </div>
+                    <div class="value-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Community</h4>
+                        <p>Building a community of conscious parents and style enthusiasts</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-image">
+                <div class="about-image-placeholder">
+                    <i class="fas fa-seedling"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section contact-section">
+    <div class="container">
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle">Have questions? We'd love to hear from you!</p>
+        
+        <div class="contact-content">
+            <div class="contact-form-wrapper">
+                <form method="POST" action="{{ url_for('main.contact') }}" class="contact-form">
+                    <div class="form-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-email">Email Address</label>
+                        <input type="email" id="contact-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-accent">Send Message</button>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>info@stycly.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+39 123 456 7890</p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Location</h4>
+                        <p>Milan, Italy</p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>Business Hours</h4>
+                        <p>Monday - Friday: 9:00 - 18:00<br>Saturday: 10:00 - 16:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if session.user_id %}
+<!-- Private Wardrobe Section (Logged-in Users Only) -->
+<section id="wardrobe" class="section wardrobe-section">
+    <div class="container">
+        <h2 class="section-title">My Private Wardrobe</h2>
+        <p class="section-subtitle">Manage your collection</p>
+        
+        <!-- Add Item Form -->
+        <div class="wardrobe-add-form">
+            <button class="btn btn-accent" onclick="toggleAddItemForm()">
+                <i class="fas fa-plus"></i> Add New Item
+            </button>
+            
+            <form id="addItemForm" method="POST" action="{{ url_for('wardrobe.add_item') }}" enctype="multipart/form-data" class="item-form" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category">
+                            <option value="dress">Dress</option>
+                            <option value="suit">Suit</option>
+                            <option value="casual">Casual</option>
+                            <option value="formal">Formal</option>
+                            <option value="party">Party</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="size">Size</label>
+                        <input type="text" id="size" name="size" placeholder="e.g., M, 2-3y">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age_range">Age Range</label>
+                        <input type="text" id="age_range" name="age_range" placeholder="e.g., 2-3y">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="color">Color</label>
+                        <input type="text" id="color" name="color" placeholder="e.g., Blue">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="daily_price">Daily Price (€) *</label>
+                        <input type="number" id="daily_price" name="daily_price" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stock">Stock Quantity</label>
+                        <input type="number" id="stock" name="stock" min="1" value="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                    </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" name="is_public" checked>
+                        <span>Make publicly available for rent</span>
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-accent">Add Item</button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleAddItemForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Wardrobe Items Grid -->
+        <div class="wardrobe-items" id="wardrobeItems">
+            <!-- Items will be loaded here or shown from server -->
+            <p class="no-items">You haven't added any items yet. Click "Add New Item" to get started!</p>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Rental Request Section (Cart Checkout) -->
+<section id="rental-request" class="section rental-section">
+    <div class="container">
+        <h2 class="section-title">Complete Your Rental Request</h2>
+        <p class="section-subtitle">Just a few more details and you're all set!</p>
+        
+        <form method="POST" action="{{ url_for('orders.submit_order') }}" class="rental-form">
+            <div class="form-section">
+                <h3><i class="fas fa-calendar"></i> Rental Period</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start_date">Start Date *</label>
+                        <input type="date" id="start_date" name="start_date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="end_date">End Date *</label>
+                        <input type="date" id="end_date" name="end_date" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3><i class="fas fa-user"></i> Your Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="rental_name">Full Name *</label>
+                        <input type="text" id="rental_name" name="name" {% if session.user_name %}value="{{ session.user_name }}"{% endif %} required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rental_email">Email Address *</label>
+                        <input type="email" id="rental_email" name="email" {% if session.user_email %}value="{{ session.user_email }}"{% endif %} required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes / Special Requests</label>
+                    <textarea id="notes" name="notes" rows="4" placeholder="Any special requests or information we should know..."></textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" name="privacy" required>
+                        <span>I accept the <a href="#" target="_blank">Privacy Policy</a> and <a href="#" target="_blank">Terms & Conditions</a> *</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-actions centered">
+                <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-paper-plane"></i> Submit Rental Request
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% if session.user_id %}
+<script src="{{ url_for('static', filename='js/wardrobe.js') }}"></script>
+{% endif %}
+{% endblock %}

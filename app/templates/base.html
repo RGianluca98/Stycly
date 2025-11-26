@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Stycly - Sustainable Kids Fashion Rental{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="nav-logo">
+                <a href="{{ url_for('main.index') }}">
+                    <span class="logo-text">STYCLY</span>
+                </a>
+            </div>
+            
+            <!-- Hamburger Menu (Mobile) -->
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active" data-section="home">HOME</a>
+                <a href="#products" class="nav-link" data-section="products">PRODUCTS</a>
+                <a href="#how-it-works" class="nav-link" data-section="how-it-works">HOW IT WORKS</a>
+                <a href="#about" class="nav-link" data-section="about">ABOUT US</a>
+                <a href="#contact" class="nav-link" data-section="contact">CONTACT</a>
+                {% if session.user_id %}
+                <a href="#wardrobe" class="nav-link" data-section="wardrobe">PRIVATE WARDROBE</a>
+                {% endif %}
+            </div>
+            
+            <!-- Right Side Icons/Menu -->
+            <div class="nav-right">
+                {% if session.user_id %}
+                    <!-- User Dropdown -->
+                    <div class="user-dropdown">
+                        <button class="user-menu-btn" id="userMenuBtn">
+                            <i class="fas fa-user-circle"></i>
+                            <span class="user-name">{{ session.user_name }}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content" id="userDropdown">
+                            <div class="dropdown-header">
+                                <strong>{{ session.user_name }}</strong>
+                                <small>{{ session.user_email }}</small>
+                            </div>
+                            <div class="dropdown-item last-insert" id="lastInsertInfo">
+                                <i class="fas fa-clock"></i>
+                                <span>Loading...</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item danger" onclick="confirmDeleteWardrobe()">
+                                <i class="fas fa-trash"></i>
+                                Delete Wardrobe
+                            </button>
+                            <button class="dropdown-item danger" onclick="confirmDeleteAccount()">
+                                <i class="fas fa-user-times"></i>
+                                Delete Account
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ url_for('auth.logout') }}" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-small btn-accent">Login</a>
+                {% endif %}
+                
+                <!-- Cart Icon -->
+                <button class="icon-btn" id="cartBtn" aria-label="Shopping cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                
+                <!-- Search Icon (triggers filter in products section) -->
+                <button class="icon-btn" id="searchBtn" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">
+                        <span>{{ message }}</span>
+                        <button class="flash-close">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-logo">STYCLY</h3>
+                <p>Sustainable fashion for your little ones. Rent, wear, return, repeat.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> info@stycly.com</p>
+                <p><i class="fas fa-phone"></i> +39 123 456 7890</p>
+                <p><i class="fas fa-map-marker-alt"></i> Milan, Italy</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Stycly. All rights reserved. Made with <i class="fas fa-heart"></i> for sustainable fashion.</p>
+        </div>
+    </footer>
+    
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content modal-cart">
+            <div class="modal-header">
+                <h2><i class="fas fa-shopping-bag"></i> Your Cart</h2>
+                <button class="modal-close" onclick="closeCartModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCartModal()">Continue Shopping</button>
+                <button class="btn btn-accent" onclick="proceedToRental()">Proceed to Rental</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
