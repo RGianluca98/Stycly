@@ -2,38 +2,115 @@
 
 {% block content %}
 
-<!-- Hero Section -->
-<section id="home" class="hero">
-    <div class="hero-content">
-        <div class="hero-text">
-            <h1 class="hero-title">Vesti i tuoi piccoli con stile</h1>
-            <p class="hero-subtitle">Noleggio di moda sostenibile per bambini. Occasioni speciali, magia quotidiana.</p>
-            <div class="hero-buttons">
-                <a href="#products" class="btn btn-primary">Esplora Collezione</a>
-                <a href="#how-it-works" class="btn btn-secondary">Come Funziona</a>
+<!-- Hero Section - Split Screen con Gallery Rotante -->
+<section id="home" class="hero-creative">
+    <div class="hero-split">
+        <!-- Left: Rotating Image Gallery -->
+        <div class="hero-gallery">
+            <div class="gallery-slider">
+                <div class="gallery-slide active" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/1.jpg') }}');"></div>
+                <div class="gallery-slide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/2.jpg') }}');"></div>
+                <div class="gallery-slide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/3.jpg') }}');"></div>
+                <div class="gallery-slide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/4.jpg') }}');"></div>
             </div>
+            <div class="gallery-overlay"></div>
         </div>
-        <div class="hero-image">
-            <div class="hero-image-placeholder">
-                <i class="fas fa-child"></i>
+
+        <!-- Right: Hero Text -->
+        <div class="hero-text-area">
+            <div class="hero-text-content">
+                <span class="hero-label">Noleggio Moda Bambini</span>
+                <h1 class="hero-title-new">Vesti i tuoi piccoli con stile</h1>
+                <p class="hero-subtitle-new">Occasioni speciali, shooting fotografici, feste indimenticabili. Qualità premium, sostenibilità garantita.</p>
+                <div class="hero-buttons-new">
+                    <a href="#products" class="btn-new btn-primary-new">
+                        <span>Esplora Collezione</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#how-it-works" class="btn-new btn-secondary-new">
+                        <span>Come Funziona</span>
+                    </a>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-leaf"></i>
+                        <div>
+                            <strong>100%</strong>
+                            <span>Sostenibile</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <strong>500+</strong>
+                            <span>Outfit</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-star"></i>
+                        <div>
+                            <strong>Premium</strong>
+                            <span>Qualità</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="hero-features">
-        <div class="feature-card">
-            <i class="fas fa-leaf"></i>
-            <h3>Sostenibile</h3>
-            <p>Riduci gli sprechi, abbraccia la moda circolare</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-euro-sign"></i>
-            <h3>Conveniente</h3>
-            <p>Qualità premium senza il prezzo premium</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-rotate"></i>
-            <h3>Flessibile</h3>
-            <p>Noleggia per giorni, settimane o eventi speciali</p>
+</section>
+
+<!-- Bento Box Section - Visual Storytelling -->
+<section class="bento-section">
+    <div class="container-bento">
+        <div class="bento-grid">
+            <!-- Large Image Block -->
+            <div class="bento-item bento-large" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/5.jpg') }}');">
+                <div class="bento-overlay">
+                    <h3>Per lo Shooting</h3>
+                    <p>Outfit perfetti per catturare momenti indimenticabili</p>
+                    <a href="#products" class="bento-link">Scopri <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Text Block -->
+            <div class="bento-item bento-text">
+                <i class="fas fa-sparkles"></i>
+                <h3>Occasioni Speciali</h3>
+                <p>Matrimoni, compleanni, cerimonie. Ogni momento merita il meglio.</p>
+            </div>
+
+            <!-- Medium Image Block -->
+            <div class="bento-item bento-medium" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/6.jpg') }}');">
+                <div class="bento-overlay">
+                    <h3>Vintage</h3>
+                </div>
+            </div>
+
+            <!-- Feature Block -->
+            <div class="bento-item bento-feature">
+                <div class="feature-icon">
+                    <i class="fas fa-rotate"></i>
+                </div>
+                <h4>Moda Circolare</h4>
+                <p>Riduci gli sprechi, abbraccia la sostenibilità</p>
+            </div>
+
+            <!-- Wide Image Block -->
+            <div class="bento-item bento-wide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/7.jpg') }}');">
+                <div class="bento-overlay">
+                    <h3>Props & Accessories</h3>
+                    <p>Completa il look con i nostri accessori unici</p>
+                </div>
+            </div>
+
+            <!-- CTA Block -->
+            <div class="bento-item bento-cta">
+                <h3>Inizia Oggi</h3>
+                <p>Scopri la nostra collezione e trova l'outfit perfetto</p>
+                <a href="#products" class="btn btn-accent">Vai ai Prodotti</a>
+            </div>
         </div>
     </div>
 </section>

@@ -2,6 +2,9 @@
 
 // Smooth scrolling and navigation
 document.addEventListener('DOMContentLoaded', function() {
+    // Hero Gallery Auto-Rotate
+    initHeroGallery();
+
     // Hamburger menu
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
@@ -283,3 +286,25 @@ document.addEventListener('click', function(e) {
         closeCartModal();
     }
 });
+
+// Hero Gallery Auto-Rotate Function
+function initHeroGallery() {
+    const slides = document.querySelectorAll('.gallery-slide');
+    if (slides.length === 0) return;
+
+    let currentSlide = 0;
+
+    function showNextSlide() {
+        // Remove active class from current slide
+        slides[currentSlide].classList.remove('active');
+
+        // Move to next slide
+        currentSlide = (currentSlide + 1) % slides.length;
+
+        // Add active class to next slide
+        slides[currentSlide].classList.add('active');
+    }
+
+    // Auto-rotate every 4 seconds
+    setInterval(showNextSlide, 4000);
+}

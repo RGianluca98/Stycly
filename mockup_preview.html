@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stycly - Mockup Preview Home Page</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Color Palette */
+        :root {
+            --col-primario: #3A4C69;
+            --col-secondario: #F5F0EB;
+            --col-accent: #E9D8C7;
+            --col-hover: #D4BBA8;
+            --col-white: #FFFFFF;
+            --col-warm-light: #F9F5F2;
+            --col-navy-dark: #2C3A50;
+            --col-accent-gold: #C9A882;
+            --font-main: 'Poppins', Arial, sans-serif;
+            --font-title: 'Fredoka', 'Poppins', Arial, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); color: var(--col-primario); }
+
+        /* Hero Section - Creative Split Screen */
+        .hero-creative {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+        }
+
+        /* Left: Gallery */
+        .hero-gallery {
+            position: relative;
+            overflow: hidden;
+            background: var(--col-primario);
+        }
+
+        .gallery-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gallery-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .gallery-slide.active {
+            opacity: 1;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent 0%, rgba(58, 76, 105, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        /* Right: Text Content */
+        .hero-text-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            background: var(--col-warm-light);
+        }
+
+        .hero-text-content {
+            max-width: 550px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--col-accent-gold);
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(233, 216, 199, 0.3);
+            border-radius: 20px;
+        }
+
+        .hero-title-new {
+            font-family: var(--font-title);
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--col-primario);
+            font-weight: 700;
+        }
+
+        .hero-subtitle-new {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+
+        .hero-buttons-new {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .btn-new {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary-new {
+            background: var(--col-primario);
+            color: var(--col-white);
+            box-shadow: 0 4px 15px rgba(58, 76, 105, 0.3);
+        }
+
+        .btn-primary-new:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(58, 76, 105, 0.4);
+        }
+
+        .btn-secondary-new {
+            background: transparent;
+            color: var(--col-primario);
+            border: 2px solid var(--col-primario);
+        }
+
+        .btn-secondary-new:hover {
+            background: var(--col-primario);
+            color: var(--col-white);
+        }
+
+        /* Hero Stats */
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-item i {
+            font-size: 2rem;
+            color: var(--col-accent);
+        }
+
+        .stat-item div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-item strong {
+            font-size: 1.5rem;
+            color: var(--col-primario);
+            font-weight: 700;
+        }
+
+        .stat-item span {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Bento Box Section */
+        .bento-section {
+            padding: 5rem 2rem;
+            background: var(--col-white);
+        }
+
+        .container-bento {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 280px;
+            gap: 1.5rem;
+        }
+
+        .bento-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .bento-large {
+            grid-column: span 2;
+            grid-row: span 2;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bento-wide {
+            grid-column: span 2;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bento-medium {
+            grid-row: span 2;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bento-text {
+            background: var(--col-secondario);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bento-text i {
+            font-size: 2.5rem;
+            color: var(--col-accent);
+            margin-bottom: 1rem;
+        }
+
+        .bento-text h3 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--col-primario);
+        }
+
+        .bento-text p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .bento-feature {
+            background: var(--col-primario);
+            color: var(--col-white);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .feature-icon i {
+            font-size: 1.8rem;
+        }
+
+        .bento-feature h4 {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bento-cta {
+            background: var(--col-accent);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .bento-cta h3 {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--col-primario);
+        }
+
+        .bento-cta p {
+            color: var(--col-primario);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-accent {
+            background: var(--col-primario);
+            color: var(--col-white);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(58, 76, 105, 0.3);
+        }
+
+        /* Bento Overlays */
+        .bento-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            color: var(--col-white);
+            transform: translateY(60%);
+            transition: all 0.4s ease;
+        }
+
+        .bento-item:hover .bento-overlay {
+            transform: translateY(0);
+        }
+
+        .bento-overlay h3 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--col-white);
+        }
+
+        .bento-overlay p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .bento-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--col-white);
+            font-weight: 600;
+            text-decoration: none;
+            transition: gap 0.3s ease;
+        }
+
+        .bento-link:hover {
+            gap: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-split {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-gallery {
+                height: 50vh;
+            }
+
+            .hero-title-new {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons-new {
+                flex-direction: column;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 200px;
+            }
+
+            .bento-large, .bento-wide, .bento-medium {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section - Split Screen con Gallery Rotante -->
+    <section class="hero-creative">
+        <div class="hero-split">
+            <!-- Left: Rotating Image Gallery -->
+            <div class="hero-gallery">
+                <div class="gallery-slider">
+                    <div class="gallery-slide active" style="background-image: url('app/static/immagini/shooting vecchi/originali/1.jpg');"></div>
+                    <div class="gallery-slide" style="background-image: url('app/static/immagini/shooting vecchi/originali/2.jpg');"></div>
+                    <div class="gallery-slide" style="background-image: url('app/static/immagini/shooting vecchi/originali/3.jpg');"></div>
+                    <div class="gallery-slide" style="background-image: url('app/static/immagini/shooting vecchi/originali/4.jpg');"></div>
+                </div>
+                <div class="gallery-overlay"></div>
+            </div>
+
+            <!-- Right: Hero Text -->
+            <div class="hero-text-area">
+                <div class="hero-text-content">
+                    <span class="hero-label">Noleggio Moda Bambini</span>
+                    <h1 class="hero-title-new">Vesti i tuoi piccoli con stile</h1>
+                    <p class="hero-subtitle-new">Occasioni speciali, shooting fotografici, feste indimenticabili. Qualità premium, sostenibilità garantita.</p>
+                    <div class="hero-buttons-new">
+                        <a href="#" class="btn-new btn-primary-new">
+                            <span>Esplora Collezione</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="#" class="btn-new btn-secondary-new">
+                            <span>Come Funziona</span>
+                        </a>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-leaf"></i>
+                            <div>
+                                <strong>100%</strong>
+                                <span>Sostenibile</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-heart"></i>
+                            <div>
+                                <strong>500+</strong>
+                                <span>Outfit</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <strong>Premium</strong>
+                                <span>Qualità</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Box Section - Visual Storytelling -->
+    <section class="bento-section">
+        <div class="container-bento">
+            <div class="bento-grid">
+                <!-- Large Image Block -->
+                <div class="bento-item bento-large" style="background-image: url('app/static/immagini/shooting vecchi/originali/5.jpg');">
+                    <div class="bento-overlay">
+                        <h3>Per lo Shooting</h3>
+                        <p>Outfit perfetti per catturare momenti indimenticabili</p>
+                        <a href="#" class="bento-link">Scopri <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Text Block -->
+                <div class="bento-item bento-text">
+                    <i class="fas fa-sparkles"></i>
+                    <h3>Occasioni Speciali</h3>
+                    <p>Matrimoni, compleanni, cerimonie. Ogni momento merita il meglio.</p>
+                </div>
+
+                <!-- Medium Image Block -->
+                <div class="bento-item bento-medium" style="background-image: url('app/static/immagini/shooting vecchi/originali/6.jpg');">
+                    <div class="bento-overlay">
+                        <h3>Vintage</h3>
+                    </div>
+                </div>
+
+                <!-- Feature Block -->
+                <div class="bento-item bento-feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-rotate"></i>
+                    </div>
+                    <h4>Moda Circolare</h4>
+                    <p>Riduci gli sprechi, abbraccia la sostenibilità</p>
+                </div>
+
+                <!-- Wide Image Block -->
+                <div class="bento-item bento-wide" style="background-image: url('app/static/immagini/shooting vecchi/originali/7.jpg');">
+                    <div class="bento-overlay">
+                        <h3>Props & Accessories</h3>
+                        <p>Completa il look con i nostri accessori unici</p>
+                    </div>
+                </div>
+
+                <!-- CTA Block -->
+                <div class="bento-item bento-cta">
+                    <h3>Inizia Oggi</h3>
+                    <p>Scopri la nostra collezione e trova l'outfit perfetto</p>
+                    <a href="#" class="btn-accent">Vai ai Prodotti</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Hero Gallery Auto-Rotate
+        function initHeroGallery() {
+            const slides = document.querySelectorAll('.gallery-slide');
+            if (slides.length === 0) return;
+
+            let currentSlide = 0;
+
+            function showNextSlide() {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+
+            setInterval(showNextSlide, 4000);
+        }
+
+        initHeroGallery();
+    </script>
+</body>
+</html>
