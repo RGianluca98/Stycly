@@ -8,10 +8,22 @@
         <!-- Left: Rotating Image Gallery -->
         <div class="hero-gallery">
             <div class="gallery-slider">
-                <div class="gallery-slide active" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/1.jpg') }}');"></div>
-                <div class="gallery-slide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/2.jpg') }}');"></div>
-                <div class="gallery-slide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/3.jpg') }}');"></div>
-                <div class="gallery-slide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/4.jpg') }}');"></div>
+                <div class="gallery-slide active"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/1.jpg') }}" alt="Outfit 1"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/2.jpg') }}" alt="Outfit 2"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/3.jpg') }}" alt="Outfit 3"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/4.jpg') }}" alt="Outfit 4"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/5.jpg') }}" alt="Outfit 5"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/6.jpg') }}" alt="Outfit 6"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/7.jpg') }}" alt="Outfit 7"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/8.jpg') }}" alt="Outfit 8"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/9.jpg') }}" alt="Outfit 9"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/10.jpg') }}" alt="Outfit 10"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/11.jpg') }}" alt="Outfit 11"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/a418968a-dc4c-4562-a4cc-7de1917c399d.jpg') }}" alt="Outfit 12"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/a96d9f33-8276-4606-a82e-6c4469f28931.jpg') }}" alt="Outfit 13"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/bc3f1970-9320-49a4-8959-e1cf7525f238_rw_1920.jpg') }}" alt="Outfit 14"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/d7f8f8c6-dc5d-4e0b-b979-9c6c02e71b8e_rw_1920.jpg') }}" alt="Outfit 15"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/daefc3a7-1539-4bbb-966b-440a873fbdde_rw_1920.jpg') }}" alt="Outfit 16"></div>
             </div>
             <div class="gallery-overlay"></div>
         </div>
@@ -42,14 +54,14 @@
                         </div>
                     </div>
                     <div class="stat-item">
-                        <i class="fas fa-heart"></i>
+                        <i class="fas fa-tshirt"></i>
                         <div>
                             <strong>500+</strong>
                             <span>Outfit</span>
                         </div>
                     </div>
                     <div class="stat-item">
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-award"></i>
                         <div>
                             <strong>Premium</strong>
                             <span>Qualità</span>
@@ -61,55 +73,47 @@
     </div>
 </section>
 
-<!-- Bento Box Section - Visual Storytelling -->
-<section class="bento-section">
-    <div class="container-bento">
-        <div class="bento-grid">
-            <!-- Large Image Block -->
-            <div class="bento-item bento-large" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/5.jpg') }}');">
-                <div class="bento-overlay">
-                    <h3>Per lo Shooting</h3>
-                    <p>Outfit perfetti per catturare momenti indimenticabili</p>
-                    <a href="#products" class="bento-link">Scopri <i class="fas fa-arrow-right"></i></a>
+<!-- Categories Section -->
+<section class="categories-section">
+    <div class="container">
+        <h2 class="section-title text-center">Le Nostre Collezioni</h2>
+        <p class="section-subtitle text-center">Scopri la categoria perfetta per ogni occasione</p>
+
+        <div class="categories-grid">
+            <!-- Shooting Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="{{ url_for('static', filename='immagini/shooting vecchi/shooting/12.jpg') }}" alt="Per lo Shooting">
+                    <div class="category-overlay">
+                        <h3>Per lo Shooting</h3>
+                        <p>Outfit eleganti per servizi fotografici professionali</p>
+                        <a href="#products" class="btn-category">Esplora <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Text Block -->
-            <div class="bento-item bento-text">
-                <i class="fas fa-sparkles"></i>
-                <h3>Occasioni Speciali</h3>
-                <p>Matrimoni, compleanni, cerimonie. Ogni momento merita il meglio.</p>
-            </div>
-
-            <!-- Medium Image Block -->
-            <div class="bento-item bento-medium" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/6.jpg') }}');">
-                <div class="bento-overlay">
-                    <h3>Vintage</h3>
+            <!-- Props Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="{{ url_for('static', filename='immagini/shooting vecchi/props/10.jpg') }}" alt="Props & Accessories">
+                    <div class="category-overlay">
+                        <h3>Props & Accessori</h3>
+                        <p>Completa il look con accessori unici</p>
+                        <a href="#products" class="btn-category">Scopri <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Feature Block -->
-            <div class="bento-item bento-feature">
-                <div class="feature-icon">
-                    <i class="fas fa-rotate"></i>
+            <!-- Occasioni Speciali Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/6.jpg') }}" alt="Occasioni Speciali">
+                    <div class="category-overlay">
+                        <h3>Occasioni Speciali</h3>
+                        <p>Matrimoni, feste e cerimonie indimenticabili</p>
+                        <a href="#products" class="btn-category">Vedi Tutto <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <h4>Moda Circolare</h4>
-                <p>Riduci gli sprechi, abbraccia la sostenibilità</p>
-            </div>
-
-            <!-- Wide Image Block -->
-            <div class="bento-item bento-wide" style="background-image: url('{{ url_for('static', filename='immagini/shooting vecchi/originali/7.jpg') }}');">
-                <div class="bento-overlay">
-                    <h3>Props & Accessories</h3>
-                    <p>Completa il look con i nostri accessori unici</p>
-                </div>
-            </div>
-
-            <!-- CTA Block -->
-            <div class="bento-item bento-cta">
-                <h3>Inizia Oggi</h3>
-                <p>Scopri la nostra collezione e trova l'outfit perfetto</p>
-                <a href="#products" class="btn btn-accent">Vai ai Prodotti</a>
             </div>
         </div>
     </div>
