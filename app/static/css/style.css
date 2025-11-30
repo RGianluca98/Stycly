@@ -91,7 +91,7 @@ img { max-width: 100%; height: auto; display: block; }
 .hero-gallery {
     position: relative;
     overflow: hidden;
-    background: var(--col-primario);
+    background: var(--col-accent-gold);
 }
 
 .gallery-slider {
@@ -740,7 +740,22 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Rental Section */
 .rental-section { background: var(--col-secondario); }
-.rental-form { max-width: 800px; margin: 0 auto; background: var(--col-white); padding: 2rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.rental-checkout-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+.order-summary { background: var(--col-white); padding: 2rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); height: fit-content; position: sticky; top: 100px; }
+.order-summary h3 { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 1.3rem; color: var(--col-primario); }
+.order-summary-items { margin-bottom: 2rem; }
+.order-summary-item { display: flex; gap: 1rem; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
+.order-summary-item:last-child { border-bottom: none; }
+.order-summary-item img { width: 60px; height: 60px; min-width: 60px; object-fit: cover; border-radius: 8px; background: #f5f5f5; display: block; }
+.order-summary-item-info { flex: 1; }
+.order-summary-item-info h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+.order-summary-item-info p { font-size: 0.85rem; color: #666; margin: 0; }
+.order-summary-item-quantity { font-weight: 600; color: var(--col-primario); }
+.order-summary-dates { padding-top: 1rem; border-top: 2px solid var(--col-accent-gold); }
+.order-summary-dates p { margin: 0.5rem 0; color: #666; }
+.order-summary-dates strong { color: var(--col-primario); }
+.rental-form-wrapper { background: var(--col-white); padding: 2rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.rental-form { max-width: none; margin: 0; background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
 .form-section { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid #ddd; }
 .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 .form-section h3 { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 1.3rem; }
@@ -857,6 +872,15 @@ img { max-width: 100%; height: auto; display: block; }
 
   .feature-card-image {
     height: 240px;
+  }
+
+  /* Rental Checkout Responsive */
+  .rental-checkout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    position: static;
   }
 }
 

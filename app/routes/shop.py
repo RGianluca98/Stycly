@@ -16,8 +16,19 @@ def products():
     import json
     items = WardrobeItem.query.filter_by(is_public_for_rent=True).all()
 
+    # Get current cart to calculate available stock
+    cart = session.get('cart', {})
+
     products_data = []
     for item in items:
+        # Calculate available stock (total stock - quantity in cart)
+        quantity_in_cart = cart.get(str(item.id), 0)
+        available_stock = (item.stock or 0) - quantity_in_cart
+
+        # Only show items with available stock > 0
+        if available_stock <= 0:
+            continue
+
         # Parse image_paths JSON array
         image_paths = []
         if item.image_paths:
@@ -37,7 +48,7 @@ def products():
             'color': item.color,
             'condition': item.condition,
             'image_paths': image_paths,
-            'stock': item.stock
+            'stock': available_stock  # Send available stock, not total stock
         })
 
     return jsonify(products_data)
@@ -161,6 +172,7 @@ def remove_from_cart():
 def get_cart():
     """Get cart contents with item details"""
     import json
+    from flask import url_for
     cart = session.get('cart', {})
 
     if not cart:
@@ -178,7 +190,8 @@ def get_cart():
                 try:
                     image_paths = json.loads(item.image_paths)
                     if image_paths and len(image_paths) > 0:
-                        image_path = image_paths[0]
+                        # Convert relative path to full URL
+                        image_path = url_for('static', filename=image_paths[0])
                 except:
                     pass
 
@@ -204,8 +217,46 @@ def clear_cart():
     """Clear entire cart"""
     session['cart'] = {}
     session.modified = True
-    
+
     return jsonify({
         'success': True,
         'message': 'Cart cleared'
+    })
+
+
+@shop_bp.route('/filters')
+def get_filters():
+    """Get available filter options based on actual data"""
+    # Get all public items
+    items = WardrobeItem.query.filter_by(is_public_for_rent=True).all()
+
+    # Collect unique values for each filter
+    categories = set()
+    destinations = set()
+    sizes = set()
+    age_ranges = set()
+    colors = set()
+    conditions = set()
+
+    for item in items:
+        if item.category:
+            categories.add(item.category)
+        if item.destination:
+            destinations.add(item.destination)
+        if item.size:
+            sizes.add(item.size)
+        if item.age_range:
+            age_ranges.add(item.age_range)
+        if item.color:
+            colors.add(item.color)
+        if item.condition:
+            conditions.add(item.condition)
+
+    return jsonify({
+        'categories': sorted(list(categories)),
+        'destinations': sorted(list(destinations)),
+        'sizes': sorted(list(sizes)),
+        'age_ranges': sorted(list(age_ranges)),
+        'colors': sorted(list(colors)),
+        'conditions': sorted(list(conditions))
     })

@@ -6,13 +6,15 @@ Main application factory and configuration
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# Initialize SQLAlchemy
+# Initialize extensions
 db = SQLAlchemy()
+mail = Mail()
 
 def create_app():
     """Application factory pattern"""
@@ -36,9 +38,10 @@ def create_app():
     
     # Ensure upload folder exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    
+
     # Initialize extensions
     db.init_app(app)
+    mail.init_app(app)
     
     # Register blueprints
     from app.routes.auth import auth_bp

@@ -186,13 +186,16 @@ function loadCartItems() {
             if (data.items && data.items.length > 0) {
                 let html = '<div class="cart-items">';
                 data.items.forEach(item => {
+                    // image_path is already a full URL from url_for
+                    const imgSrc = item.image_path || 'https://via.placeholder.com/80x80?text=No+Image';
+
                     html += `
                         <div class="cart-item">
-                            <img src="/static/${item.image_path}" alt="${item.title}">
+                            <img src="${imgSrc}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'">
                             <div class="cart-item-info">
                                 <h4>${item.title}</h4>
                                 <p>Taglia: ${item.size}</p>
-                                <p class="cart-item-price">€${item.daily_price}/giorno</p>
+                                ${item.age_range ? `<p>Età: ${item.age_range}</p>` : ''}
                             </div>
                             <div class="cart-item-controls">
                                 <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})">-</button>
@@ -225,6 +228,10 @@ function updateCartQuantity(itemId, quantity) {
         if (data.success) {
             loadCartItems();
             updateCartBadge();
+            // Reload products to update available stock
+            if (typeof loadProducts === 'function') {
+                loadProducts();
+            }
         }
     })
     .catch(err => console.error('Error updating cart:', err));
@@ -241,6 +248,10 @@ function removeFromCart(itemId) {
         if (data.success) {
             loadCartItems();
             updateCartBadge();
+            // Reload products to update available stock
+            if (typeof loadProducts === 'function') {
+                loadProducts();
+            }
         }
     })
     .catch(err => console.error('Error removing from cart:', err));
@@ -248,8 +259,92 @@ function removeFromCart(itemId) {
 
 function proceedToRental() {
     closeCartModal();
-    window.location.hash = 'rental-request';
+
+    // Show the rental section
+    const rentalSection = document.getElementById('rental-request');
+    if (rentalSection) {
+        rentalSection.style.display = 'block';
+
+        // Populate order summary
+        populateOrderSummary();
+
+        // Scroll to the section
+        setTimeout(() => {
+            rentalSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
 }
+
+function populateOrderSummary() {
+    fetch('/shop/cart/get')
+        .then(res => res.json())
+        .then(data => {
+            console.log('Cart data received:', data);
+
+            const summaryContainer = document.getElementById('order-summary-items');
+            if (!summaryContainer) {
+                console.error('Summary container not found!');
+                return;
+            }
+
+            if (!data.items || data.items.length === 0) {
+                summaryContainer.innerHTML = '<p class="no-items">Nessun articolo nel carrello</p>';
+                return;
+            }
+
+            let html = '';
+            data.items.forEach(item => {
+                console.log('Processing item:', item);
+                console.log('Image path:', item.image_path);
+
+                // Use first image or fallback
+                const imgSrc = item.image_path || 'https://via.placeholder.com/60x60?text=No+Image';
+
+                html += `
+                    <div class="order-summary-item">
+                        <img src="${imgSrc}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/60x60?text=No+Image'; console.error('Image failed to load:', '${imgSrc}');">
+                        <div class="order-summary-item-info">
+                            <h4>${item.title}</h4>
+                            <p>Taglia: ${item.size}</p>
+                            ${item.age_range ? `<p>Età: ${item.age_range}</p>` : ''}
+                        </div>
+                        <div class="order-summary-item-quantity">x${item.quantity}</div>
+                    </div>
+                `;
+            });
+
+            summaryContainer.innerHTML = html;
+            console.log('Order summary HTML set');
+        })
+        .catch(err => console.error('Error loading order summary:', err));
+}
+
+// Add event listener to update dates in summary when changed
+document.addEventListener('DOMContentLoaded', function() {
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    const summaryDates = document.getElementById('summary-dates');
+
+    function updateSummaryDates() {
+        const startDate = startDateInput?.value;
+        const endDate = endDateInput?.value;
+
+        if (startDate && endDate && summaryDates) {
+            const start = new Date(startDate).toLocaleDateString('it-IT');
+            const end = new Date(endDate).toLocaleDateString('it-IT');
+            summaryDates.textContent = `${start} - ${end}`;
+        } else if (summaryDates) {
+            summaryDates.textContent = 'Da selezionare';
+        }
+    }
+
+    if (startDateInput) {
+        startDateInput.addEventListener('change', updateSummaryDates);
+    }
+    if (endDateInput) {
+        endDateInput.addEventListener('change', updateSummaryDates);
+    }
+});
 
 // Wardrobe functions
 function confirmDeleteWardrobe() {

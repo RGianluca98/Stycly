@@ -3,17 +3,99 @@ let allProducts = [];
 let productsData = [];
 
 document.addEventListener('DOMContentLoaded', function() {
+    loadFilters();
     loadProducts();
-    
+
     // Set up filters
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
+    const destinationFilter = document.getElementById('destinationFilter');
     const sizeFilter = document.getElementById('sizeFilter');
+    const ageRangeFilter = document.getElementById('ageRangeFilter');
+    const colorFilter = document.getElementById('colorFilter');
+    const conditionFilter = document.getElementById('conditionFilter');
 
     if (searchInput) searchInput.addEventListener('input', filterProducts);
     if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
+    if (destinationFilter) destinationFilter.addEventListener('change', filterProducts);
     if (sizeFilter) sizeFilter.addEventListener('change', filterProducts);
+    if (ageRangeFilter) ageRangeFilter.addEventListener('change', filterProducts);
+    if (colorFilter) colorFilter.addEventListener('change', filterProducts);
+    if (conditionFilter) conditionFilter.addEventListener('change', filterProducts);
 });
+
+function loadFilters() {
+    fetch('/shop/filters')
+        .then(res => res.json())
+        .then(filters => {
+            // Populate category filter
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter && filters.categories) {
+                filters.categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    categoryFilter.appendChild(option);
+                });
+            }
+
+            // Populate destination filter
+            const destinationFilter = document.getElementById('destinationFilter');
+            if (destinationFilter && filters.destinations) {
+                filters.destinations.forEach(dest => {
+                    const option = document.createElement('option');
+                    option.value = dest;
+                    option.textContent = dest;
+                    destinationFilter.appendChild(option);
+                });
+            }
+
+            // Populate size filter
+            const sizeFilter = document.getElementById('sizeFilter');
+            if (sizeFilter && filters.sizes) {
+                filters.sizes.forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    sizeFilter.appendChild(option);
+                });
+            }
+
+            // Populate age range filter
+            const ageRangeFilter = document.getElementById('ageRangeFilter');
+            if (ageRangeFilter && filters.age_ranges) {
+                filters.age_ranges.forEach(age => {
+                    const option = document.createElement('option');
+                    option.value = age;
+                    option.textContent = age;
+                    ageRangeFilter.appendChild(option);
+                });
+            }
+
+            // Populate color filter
+            const colorFilter = document.getElementById('colorFilter');
+            if (colorFilter && filters.colors) {
+                filters.colors.forEach(color => {
+                    const option = document.createElement('option');
+                    option.value = color;
+                    option.textContent = color;
+                    colorFilter.appendChild(option);
+                });
+            }
+
+            // Populate condition filter
+            const conditionFilter = document.getElementById('conditionFilter');
+            if (conditionFilter && filters.conditions) {
+                filters.conditions.forEach(condition => {
+                    const option = document.createElement('option');
+                    option.value = condition;
+                    option.textContent = condition;
+                    conditionFilter.appendChild(option);
+                });
+            }
+        })
+        .catch(err => console.error('Error loading filters:', err));
+}
 
 function loadProducts() {
     fetch('/shop/products')
@@ -71,20 +153,27 @@ function displayProducts(products) {
 
 function filterProducts() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const category = document.getElementById('categoryFilter').value.toLowerCase();
-    const size = document.getElementById('sizeFilter').value.toLowerCase();
+    const category = document.getElementById('categoryFilter').value;
+    const destination = document.getElementById('destinationFilter').value;
+    const size = document.getElementById('sizeFilter').value;
+    const ageRange = document.getElementById('ageRangeFilter').value;
+    const color = document.getElementById('colorFilter').value;
+    const condition = document.getElementById('conditionFilter').value;
 
     const filtered = allProducts.filter(product => {
         const matchesSearch = !searchTerm ||
             product.title.toLowerCase().includes(searchTerm) ||
-            (product.description && product.description.toLowerCase().includes(searchTerm)) ||
-            (product.color && product.color.toLowerCase().includes(searchTerm)) ||
-            (product.category && product.category.toLowerCase().includes(searchTerm));
+            (product.description && product.description.toLowerCase().includes(searchTerm));
 
-        const matchesCategory = !category || (product.category && product.category.toLowerCase() === category);
-        const matchesSize = !size || (product.size && product.size.toLowerCase() === size);
+        const matchesCategory = !category || product.category === category;
+        const matchesDestination = !destination || product.destination === destination;
+        const matchesSize = !size || product.size === size;
+        const matchesAgeRange = !ageRange || product.age_range === ageRange;
+        const matchesColor = !color || product.color === color;
+        const matchesCondition = !condition || product.condition === condition;
 
-        return matchesSearch && matchesCategory && matchesSize;
+        return matchesSearch && matchesCategory && matchesDestination &&
+               matchesSize && matchesAgeRange && matchesColor && matchesCondition;
     });
 
     displayProducts(filtered);
@@ -101,6 +190,8 @@ function addToCart(itemId) {
         if (data.success) {
             updateCartBadge();
             showNotification('Articolo aggiunto al carrello!', 'success');
+            // Reload products to update available stock
+            loadProducts();
         } else {
             showNotification(data.message || 'Impossibile aggiungere l\'articolo al carrello', 'error');
         }

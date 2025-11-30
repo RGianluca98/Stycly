@@ -13,17 +13,16 @@
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/3.jpg') }}" alt="Outfit 3"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/4.jpg') }}" alt="Outfit 4"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/5.jpg') }}" alt="Outfit 5"></div>
-                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/6.jpg') }}" alt="Outfit 6"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/7.jpg') }}" alt="Outfit 7"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/8.jpg') }}" alt="Outfit 8"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/9.jpg') }}" alt="Outfit 9"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/10.jpg') }}" alt="Outfit 10"></div>
                 <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/11.jpg') }}" alt="Outfit 11"></div>
-                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/a418968a-dc4c-4562-a4cc-7de1917c399d.jpg') }}" alt="Outfit 12"></div>
-                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/a96d9f33-8276-4606-a82e-6c4469f28931.jpg') }}" alt="Outfit 13"></div>
-                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/bc3f1970-9320-49a4-8959-e1cf7525f238_rw_1920.jpg') }}" alt="Outfit 14"></div>
-                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/d7f8f8c6-dc5d-4e0b-b979-9c6c02e71b8e_rw_1920.jpg') }}" alt="Outfit 15"></div>
-                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/daefc3a7-1539-4bbb-966b-440a873fbdde_rw_1920.jpg') }}" alt="Outfit 16"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/17.jpg') }}" alt="Outfit 17"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/18.jpg') }}" alt="Outfit 18"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/19.jpg') }}" alt="Outfit 19"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/20.jpg') }}" alt="Outfit 20"></div>
+                <div class="gallery-slide"><img src="{{ url_for('static', filename='immagini/shooting vecchi/originali/21.jpg') }}" alt="Outfit 21"></div>
             </div>
             <div class="gallery-overlay"></div>
         </div>
@@ -76,8 +75,7 @@
 <!-- Categories Section -->
 <section class="categories-section">
     <div class="container">
-        <h2 class="section-title text-center">Le Nostre Collezioni</h2>
-        <p class="section-subtitle text-center">Scopri la categoria perfetta per ogni occasione</p>
+        
 
         <div class="categories-grid">
             <!-- Shooting Card -->
@@ -129,24 +127,32 @@
         <div class="filter-bar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cerca per titolo, colore, categoria...">
+                <input type="text" id="searchInput" placeholder="Cerca per titolo, descrizione...">
             </div>
             <div class="filter-group">
                 <select id="categoryFilter" class="filter-select">
                     <option value="">Tutte le Categorie</option>
-                    <option value="dress">Abiti</option>
-                    <option value="suit">Completi</option>
-                    <option value="casual">Casual</option>
-                    <option value="formal">Formale</option>
-                    <option value="party">Festa</option>
+                    <!-- Options loaded dynamically -->
+                </select>
+                <select id="destinationFilter" class="filter-select">
+                    <option value="">Tutte le Destinazioni</option>
+                    <!-- Options loaded dynamically -->
                 </select>
                 <select id="sizeFilter" class="filter-select">
                     <option value="">Tutte le Taglie</option>
-                    <option value="XS">XS</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
+                    <!-- Options loaded dynamically -->
+                </select>
+                <select id="ageRangeFilter" class="filter-select">
+                    <option value="">Tutte le Età</option>
+                    <!-- Options loaded dynamically -->
+                </select>
+                <select id="colorFilter" class="filter-select">
+                    <option value="">Tutti i Colori</option>
+                    <!-- Options loaded dynamically -->
+                </select>
+                <select id="conditionFilter" class="filter-select">
+                    <option value="">Tutte le Condizioni</option>
+                    <!-- Options loaded dynamically -->
                 </select>
             </div>
         </div>
@@ -244,9 +250,7 @@
             </div>
 
             <div class="about-image">
-                <div class="about-image-placeholder">
-                    <i class="fas fa-seedling"></i>
-                </div>
+                <img src="{{ url_for('static', filename='immagini/about-us.jpeg') }}" alt="Chi Siamo - Stycly" style="width: 100%; height: 100%; object-fit: cover; border-radius: 24px;">
             </div>
         </div>
     </div>
@@ -470,12 +474,27 @@
 {% endif %}
 
 <!-- Rental Request Section (Cart Checkout) -->
-<section id="rental-request" class="section rental-section">
+<section id="rental-request" class="section rental-section" style="display: none;">
     <div class="container">
         <h2 class="section-title">Completa la Tua Richiesta di Noleggio</h2>
         <p class="section-subtitle">Solo qualche dettaglio in più e sei pronto!</p>
-        
-        <form method="POST" action="{{ url_for('orders.submit_order') }}" class="rental-form">
+
+        <div class="rental-checkout-grid">
+            <!-- Order Summary (Left Column) -->
+            <div class="order-summary">
+                <h3><i class="fas fa-shopping-bag"></i> Riepilogo Ordine</h3>
+                <div id="order-summary-items" class="order-summary-items">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+                <div class="order-summary-dates">
+                    <p><strong>Date noleggio:</strong></p>
+                    <p id="summary-dates">Da selezionare</p>
+                </div>
+            </div>
+
+            <!-- Rental Form (Right Column) -->
+            <div class="rental-form-wrapper">
+                <form method="POST" action="{{ url_for('orders.submit_order') }}" class="rental-form">
             <div class="form-section">
                 <h3><i class="fas fa-calendar"></i> Periodo di Noleggio</h3>
 
@@ -532,7 +551,9 @@
                     <i class="fas fa-paper-plane"></i> Invia Richiesta di Noleggio
                 </button>
             </div>
-        </form>
+                </form>
+            </div>
+        </div>
     </div>
 </section>
 
