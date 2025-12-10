@@ -212,6 +212,64 @@ def get_cart():
     })
 
 
+@shop_bp.route('/product/<int:product_id>')
+def product_detail(product_id):
+    """Product detail page"""
+    import json
+
+    item = WardrobeItem.query.get_or_404(product_id)
+
+    # Check if item is available for rent
+    if not item.is_public_for_rent:
+        return render_template('404.html'), 404
+
+    # Parse image_paths
+    image_paths = []
+    if item.image_paths:
+        try:
+            image_paths = json.loads(item.image_paths)
+        except:
+            pass
+
+    # Get cart to check quantity
+    cart = session.get('cart', {})
+    quantity_in_cart = cart.get(str(item.id), 0)
+    available_stock = (item.stock or 0) - quantity_in_cart
+
+    # Get related products (same category, different product)
+    related_items = WardrobeItem.query.filter(
+        WardrobeItem.category == item.category,
+        WardrobeItem.id != item.id,
+        WardrobeItem.is_public_for_rent == True
+    ).limit(4).all()
+
+    related_products = []
+    for rel_item in related_items:
+        rel_images = []
+        if rel_item.image_paths:
+            try:
+                rel_images = json.loads(rel_item.image_paths)
+            except:
+                pass
+
+        related_products.append({
+            'id': rel_item.id,
+            'title': rel_item.title,
+            'size': rel_item.size,
+            'age_range': rel_item.age_range,
+            'color': rel_item.color,
+            'condition': rel_item.condition,
+            'stock': rel_item.stock,
+            'image_paths': rel_images
+        })
+
+    return render_template('product_detail.html',
+                         item=item,
+                         image_paths=image_paths,
+                         available_stock=available_stock,
+                         related_products=related_products)
+
+
 @shop_bp.route('/cart/clear', methods=['POST'])
 def clear_cart():
     """Clear entire cart"""

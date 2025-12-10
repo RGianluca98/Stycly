@@ -140,9 +140,14 @@ function displayProducts(products) {
                     </div>
                     ${product.condition ? `<p style="font-size: 0.85rem; color: #888; margin-top: 0.5rem;">Condizione: ${escapeHtml(product.condition)}</p>` : ''}
                     ${product.stock !== undefined ? `<p style="font-size: 0.85rem; color: ${product.stock > 0 ? '#28a745' : '#dc3545'}; margin-top: 0.25rem; font-weight: 600;">Disponibilità: ${product.stock}</p>` : ''}
-                    <button class="btn btn-accent add-to-cart-btn" onclick="addToCart(${product.id})" style="margin-top: 1rem;">
-                        <i class="fas fa-shopping-bag"></i> Richiedi Preventivo
-                    </button>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button class="btn btn-primary" onclick="openProductDetail(${product.id})" style="flex: 1;">
+                            <i class="fas fa-eye"></i> Vedi Dettagli
+                        </button>
+                        <button class="btn btn-accent add-to-cart-btn" onclick="addToCart(${product.id})" style="flex: 1;">
+                            <i class="fas fa-shopping-bag"></i> Aggiungi
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
@@ -280,3 +285,199 @@ function showNotification(message, type) {
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
+
+// Product Detail Modal Functions
+let currentDetailProduct = null;
+
+function openProductDetail(productId) {
+    // Redirect to dedicated product detail page
+    window.location.href = `/shop/product/${productId}`;
+    return;
+
+    // Old modal code (kept for reference, but unreachable)
+    const product = productsData.find(p => p.id === productId);
+    if (!product) {
+        console.error('Product not found:', productId);
+        return;
+    }
+
+    currentDetailProduct = product;
+    const modal = document.getElementById('productDetailModal');
+
+    // Set title
+    document.getElementById('productDetailTitle').textContent = product.title || 'Prodotto';
+
+    // Set badges
+    const badgesContainer = document.getElementById('productDetailBadges');
+    let badgesHtml = '';
+    if (product.category) {
+        badgesHtml += `<span class="product-detail-badge badge-category">${escapeHtml(product.category)}</span>`;
+    }
+    if (product.destination) {
+        badgesHtml += `<span class="product-detail-badge badge-destination">${escapeHtml(product.destination)}</span>`;
+    }
+    if (product.condition) {
+        badgesHtml += `<span class="product-detail-badge badge-condition">${escapeHtml(product.condition)}</span>`;
+    }
+    badgesContainer.innerHTML = badgesHtml;
+
+    // Set description
+    const descContainer = document.getElementById('productDetailDescription');
+    descContainer.innerHTML = product.description
+        ? `<p>${escapeHtml(product.description)}</p>`
+        : '<p>Nessuna descrizione disponibile.</p>';
+
+    // Set specs
+    const specsContainer = document.getElementById('productDetailSpecs');
+    let specsHtml = '';
+
+    if (product.size) {
+        specsHtml += `
+            <div class="spec-item">
+                <div class="spec-label">Taglia</div>
+                <div class="spec-value">${escapeHtml(product.size)}</div>
+            </div>
+        `;
+    }
+    if (product.age_range) {
+        specsHtml += `
+            <div class="spec-item">
+                <div class="spec-label">Età</div>
+                <div class="spec-value">${escapeHtml(product.age_range)}</div>
+            </div>
+        `;
+    }
+    if (product.color) {
+        specsHtml += `
+            <div class="spec-item">
+                <div class="spec-label">Colore</div>
+                <div class="spec-value">${escapeHtml(product.color)}</div>
+            </div>
+        `;
+    }
+    if (product.brand) {
+        specsHtml += `
+            <div class="spec-item">
+                <div class="spec-label">Marca</div>
+                <div class="spec-value">${escapeHtml(product.brand)}</div>
+            </div>
+        `;
+    }
+
+    // Add availability to specs
+    let availClass = 'unavailable';
+    let availText = 'Non disponibile';
+    let availBg = 'linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%)';
+    let availColor = '#721c24';
+
+    if (product.stock > 5) {
+        availClass = 'available';
+        availText = `Disponibile (${product.stock} pezzi)`;
+        availBg = 'linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%)';
+        availColor = '#155724';
+    } else if (product.stock > 0) {
+        availClass = 'limited';
+        availText = `Disponibilità limitata (${product.stock} pezzi)`;
+        availBg = 'linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)';
+        availColor = '#856404';
+    }
+
+    specsHtml += `
+        <div class="spec-item spec-availability ${availClass}" style="background: ${availBg}; color: ${availColor}; grid-column: 1 / -1;">
+            <div class="spec-label" style="color: ${availColor}; opacity: 0.8;">Disponibilità</div>
+            <div class="spec-value" style="color: ${availColor};">${availText}</div>
+        </div>
+    `;
+
+    specsContainer.innerHTML = specsHtml || '<p style="color: #999;">Nessuna specifica disponibile</p>';
+
+    // Hide availability container (we moved it to specs)
+    const availContainer = document.getElementById('productDetailAvailability');
+    availContainer.style.display = 'none';
+
+    // Set images
+    setProductDetailImages(product);
+
+    // Set add to cart button
+    const addToCartBtn = document.getElementById('productDetailAddToCart');
+    addToCartBtn.onclick = () => {
+        addToCart(product.id);
+    };
+
+    // Disable button if out of stock
+    if (product.stock <= 0) {
+        addToCartBtn.disabled = true;
+        addToCartBtn.innerHTML = '<i class="fas fa-ban"></i> Non Disponibile';
+        addToCartBtn.style.opacity = '0.5';
+        addToCartBtn.style.cursor = 'not-allowed';
+    } else {
+        addToCartBtn.disabled = false;
+        addToCartBtn.innerHTML = '<i class="fas fa-shopping-bag"></i> Richiedi Preventivo';
+        addToCartBtn.style.opacity = '1';
+        addToCartBtn.style.cursor = 'pointer';
+    }
+
+    // Show modal
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function setProductDetailImages(product) {
+    const mainImage = document.getElementById('productDetailMainImage');
+    const thumbnailsContainer = document.getElementById('productDetailThumbnails');
+
+    if (!product.image_paths || product.image_paths.length === 0) {
+        mainImage.src = 'https://via.placeholder.com/600x600?text=No+Image';
+        mainImage.alt = 'No image';
+        thumbnailsContainer.innerHTML = '';
+        return;
+    }
+
+    // Set first image as main
+    mainImage.src = `/static/${product.image_paths[0]}`;
+    mainImage.alt = product.title;
+
+    // Create thumbnails
+    let thumbnailsHtml = '';
+    product.image_paths.forEach((imagePath, index) => {
+        thumbnailsHtml += `
+            <div class="product-detail-thumbnail ${index === 0 ? 'active' : ''}"
+                 onclick="changeDetailImage(${index})">
+                <img src="/static/${imagePath}" alt="${escapeHtml(product.title)}">
+            </div>
+        `;
+    });
+
+    thumbnailsContainer.innerHTML = thumbnailsHtml;
+}
+
+function changeDetailImage(imageIndex) {
+    if (!currentDetailProduct || !currentDetailProduct.image_paths) return;
+
+    const mainImage = document.getElementById('productDetailMainImage');
+    mainImage.src = `/static/${currentDetailProduct.image_paths[imageIndex]}`;
+
+    // Update active thumbnail
+    const thumbnails = document.querySelectorAll('.product-detail-thumbnail');
+    thumbnails.forEach((thumb, idx) => {
+        if (idx === imageIndex) {
+            thumb.classList.add('active');
+        } else {
+            thumb.classList.remove('active');
+        }
+    });
+}
+
+function closeProductDetail() {
+    const modal = document.getElementById('productDetailModal');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+    currentDetailProduct = null;
+}
+
+// Close modal on ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeProductDetail();
+    }
+});

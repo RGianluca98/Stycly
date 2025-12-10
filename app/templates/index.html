@@ -557,10 +557,222 @@
     </div>
 </section>
 
+<!-- Professional Product Detail Modal -->
+<div id="productDetailModal"
+     class="pdm-modal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="pdm-title"
+     aria-hidden="true">
+
+    <!-- Backdrop with blur -->
+    <div class="pdm-backdrop" onclick="closeProductDetail()" aria-label="Chiudi modal"></div>
+
+    <!-- Modal Container -->
+    <div class="pdm-container">
+        <!-- Close Button -->
+        <button class="pdm-close"
+                onclick="closeProductDetail()"
+                aria-label="Chiudi dettagli prodotto"
+                type="button">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Modal Content -->
+        <div class="pdm-content">
+            <!-- LEFT: Image Gallery Section -->
+            <div class="pdm-gallery">
+                <!-- Main Image with Zoom -->
+                <div class="pdm-main-image-wrapper">
+                    <div class="pdm-main-image" id="pdmMainImageContainer">
+                        <img id="pdmMainImage"
+                             src=""
+                             alt="Product Image"
+                             loading="lazy">
+                        <!-- Zoom Indicator -->
+                        <div class="pdm-zoom-hint">
+                            <i class="fas fa-search-plus"></i>
+                            Passa sopra per ingrandire
+                        </div>
+                    </div>
+
+                    <!-- Image Counter -->
+                    <div class="pdm-image-counter" id="pdmImageCounter">
+                        <span id="pdmCurrentImage">1</span> / <span id="pdmTotalImages">1</span>
+                    </div>
+                </div>
+
+                <!-- Thumbnails -->
+                <div class="pdm-thumbnails" id="pdmThumbnails">
+                    <!-- Thumbnails will be inserted dynamically -->
+                </div>
+
+                <!-- Navigation Dots (Mobile) -->
+                <div class="pdm-dots" id="pdmDots">
+                    <!-- Dots will be inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- RIGHT: Product Info Section -->
+            <div class="pdm-info">
+                <div class="pdm-info-scroll">
+                    <!-- Header -->
+                    <div class="pdm-header">
+                        <h2 class="pdm-title" id="pdm-title"></h2>
+
+                        <!-- Rating & Reviews -->
+                        <div class="pdm-rating">
+                            <div class="pdm-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="pdm-rating-text">4.5 · 24 recensioni</span>
+                        </div>
+
+                        <!-- Badges -->
+                        <div class="pdm-badges" id="pdmBadges">
+                            <!-- Badges will be inserted dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Stock Availability -->
+                    <div class="pdm-stock" id="pdmStock">
+                        <!-- Stock indicator will be inserted dynamically -->
+                    </div>
+
+                    <!-- Description -->
+                    <div class="pdm-description">
+                        <p id="pdmDescriptionText"></p>
+                        <button class="pdm-expand-btn" id="pdmExpandBtn" onclick="toggleDescription()">
+                            Vedi dettagli completi <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="pdm-description-full" id="pdmDescriptionFull">
+                            <p id="pdmDescriptionFullText"></p>
+                        </div>
+                    </div>
+
+                    <!-- Size Selector -->
+                    <div class="pdm-selector-group">
+                        <div class="pdm-selector-label">
+                            <span>Taglia</span>
+                            <button class="pdm-size-guide" onclick="openSizeGuide()">
+                                <i class="fas fa-ruler"></i> Guida alle taglie
+                            </button>
+                        </div>
+                        <div class="pdm-size-options" id="pdmSizeOptions">
+                            <!-- Size options will be inserted dynamically -->
+                        </div>
+                        <div class="pdm-size-stock-hint" id="pdmSizeStockHint"></div>
+                    </div>
+
+                    <!-- Color Selector (if applicable) -->
+                    <div class="pdm-selector-group" id="pdmColorGroup" style="display: none;">
+                        <div class="pdm-selector-label">
+                            <span>Colore</span>
+                            <span class="pdm-color-name" id="pdmColorName"></span>
+                        </div>
+                        <div class="pdm-color-options" id="pdmColorOptions">
+                            <!-- Color options will be inserted dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selector -->
+                    <div class="pdm-selector-group">
+                        <div class="pdm-selector-label">
+                            <span>Quantità</span>
+                        </div>
+                        <div class="pdm-quantity">
+                            <button class="pdm-qty-btn"
+                                    onclick="decreaseQty()"
+                                    aria-label="Diminuisci quantità"
+                                    type="button">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number"
+                                   id="pdmQtyInput"
+                                   value="1"
+                                   min="1"
+                                   max="10"
+                                   readonly
+                                   aria-label="Quantità">
+                            <button class="pdm-qty-btn"
+                                    onclick="increaseQty()"
+                                    aria-label="Aumenta quantità"
+                                    type="button">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Product Highlights -->
+                    <div class="pdm-highlights">
+                        <h3>Caratteristiche</h3>
+                        <ul id="pdmHighlights">
+                            <li><i class="fas fa-check-circle"></i> Materiale di alta qualità</li>
+                            <li><i class="fas fa-check-circle"></i> Vestibilità comfort</li>
+                            <li><i class="fas fa-check-circle"></i> Facile da lavare</li>
+                        </ul>
+                    </div>
+
+                    <!-- Service Icons -->
+                    <div class="pdm-services">
+                        <div class="pdm-service-item">
+                            <i class="fas fa-shipping-fast"></i>
+                            <div>
+                                <strong>Spedizione Veloce</strong>
+                                <p>2-3 giorni lavorativi</p>
+                            </div>
+                        </div>
+                        <div class="pdm-service-item">
+                            <i class="fas fa-undo-alt"></i>
+                            <div>
+                                <strong>Resi Gratuiti</strong>
+                                <p>Entro 30 giorni</p>
+                            </div>
+                        </div>
+                        <div class="pdm-service-item">
+                            <i class="fas fa-lock"></i>
+                            <div>
+                                <strong>Pagamento Sicuro</strong>
+                                <p>Transazioni protette</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Button (Sticky on Mobile) -->
+                <div class="pdm-cta">
+                    <button class="pdm-add-to-cart"
+                            id="pdmAddToCartBtn"
+                            onclick="addToCartFromModal()"
+                            type="button">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span id="pdmBtnText">Aggiungi al Carrello</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="pdm-toast" id="pdmToast" role="alert">
+    <i class="fas fa-check-circle"></i>
+    <span id="pdmToastText">Prodotto aggiunto al carrello!</span>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/product_modal.css') }}?v=1">
 {% endblock %}
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+<script src="{{ url_for('static', filename='js/product_modal.js') }}?v=1"></script>
 {% if session.user_id %}
 <script src="{{ url_for('static', filename='js/wardrobe.js') }}"></script>
 <script src="{{ url_for('static', filename='js/wardrobe-form.js') }}"></script>

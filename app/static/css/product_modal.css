@@ -1,0 +1,964 @@
+/**
+ * Professional Product Detail Modal
+ * Optimized dimensions, proportions & layout
+ * Mobile-first, responsive, accessible
+ * 8px baseline spacing system
+ */
+
+/* ============================
+   CSS CUSTOM PROPERTIES
+   Spacing System: 8px baseline
+   ============================ */
+
+:root {
+    --pdm-space-xs: 8px;      /* 0.5rem */
+    --pdm-space-sm: 16px;     /* 1rem */
+    --pdm-space-md: 24px;     /* 1.5rem */
+    --pdm-space-lg: 32px;     /* 2rem */
+    --pdm-space-xl: 40px;     /* 2.5rem */
+    --pdm-space-2xl: 48px;    /* 3rem */
+
+    --pdm-border-radius-sm: 8px;
+    --pdm-border-radius-md: 12px;
+    --pdm-border-radius-lg: 16px;
+
+    --pdm-min-touch: 44px;    /* Minimum touch target */
+}
+
+/* ============================
+   MODAL BASE STYLES
+   ============================ */
+
+.pdm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdm-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Backdrop with Blur Effect */
+.pdm-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+
+/* Modal Container
+   Desktop: clamp(900px, 85vw, 1200px)
+   Aspect ratio: ~16:9 for visual balance
+   Border radius: 16px (--pdm-border-radius-lg)
+*/
+.pdm-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: clamp(900px, 85vw, 1200px);
+    max-height: clamp(600px, 85vh, 800px);
+    background: var(--col-white);
+    border-radius: var(--pdm-border-radius-lg);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdm-modal.is-open .pdm-container {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Close Button - Minimum touch target 44px */
+.pdm-close {
+    position: absolute;
+    top: var(--pdm-space-sm);
+    right: var(--pdm-space-sm);
+    z-index: 10;
+    width: var(--pdm-min-touch);
+    height: var(--pdm-min-touch);
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    color: var(--col-primario);
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pdm-close:hover {
+    background: var(--col-primario);
+    color: white;
+    transform: rotate(90deg);
+}
+
+.pdm-close:focus {
+    outline: 2px solid var(--col-accent);
+    outline-offset: 2px;
+}
+
+/* ============================
+   MODAL CONTENT LAYOUT
+   Desktop: 55/45 split (golden ratio inspired)
+   Visual balance: 60% content / 40% whitespace
+   ============================ */
+
+.pdm-content {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    height: 100%;
+    max-height: clamp(600px, 85vh, 800px);
+}
+
+/* ============================
+   GALLERY SECTION (LEFT)
+   ============================ */
+
+.pdm-gallery {
+    background: #FAFAFA;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.pdm-main-image-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.pdm-main-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: zoom-in;
+}
+
+.pdm-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdm-main-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Zoom Hint */
+.pdm-zoom-hint {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+    pointer-events: none;
+}
+
+.pdm-main-image:hover .pdm-zoom-hint {
+    opacity: 1;
+}
+
+/* Image Counter */
+.pdm-image-counter {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--col-primario);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Thumbnails - Using spacing system */
+.pdm-thumbnails {
+    display: flex;
+    gap: var(--pdm-space-sm);
+    padding: var(--pdm-space-sm) var(--pdm-space-md);
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.pdm-thumbnails::-webkit-scrollbar {
+    height: 4px;
+}
+
+.pdm-thumbnails::-webkit-scrollbar-track {
+    background: #E0E0E0;
+}
+
+.pdm-thumbnails::-webkit-scrollbar-thumb {
+    background: var(--col-accent);
+    border-radius: 2px;
+}
+
+.pdm-thumbnail {
+    flex-shrink: 0;
+    width: 80px;
+    height: 100px;
+    border-radius: var(--pdm-border-radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 200ms ease-out;
+}
+
+.pdm-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pdm-thumbnail:hover {
+    border-color: var(--col-accent);
+    transform: translateY(-2px);
+}
+
+.pdm-thumbnail.is-active {
+    border-color: var(--col-primario);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dots Navigation (Mobile) - Using spacing system */
+.pdm-dots {
+    display: none;
+    justify-content: center;
+    gap: var(--pdm-space-xs);
+    padding: var(--pdm-space-sm);
+}
+
+.pdm-dot {
+    width: var(--pdm-space-xs);
+    height: var(--pdm-space-xs);
+    border-radius: 50%;
+    background: #D0D0D0;
+    cursor: pointer;
+    transition: all 200ms ease-out;
+}
+
+.pdm-dot.is-active {
+    background: var(--col-primario);
+    width: calc(var(--pdm-space-xs) * 3);
+    border-radius: 4px;
+}
+
+/* ============================
+   INFO SECTION (RIGHT)
+   ============================ */
+
+.pdm-info {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.pdm-info-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--pdm-space-xl) var(--pdm-space-xl) var(--pdm-space-sm);
+}
+
+.pdm-info-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.pdm-info-scroll::-webkit-scrollbar-track {
+    background: #F5F5F5;
+}
+
+.pdm-info-scroll::-webkit-scrollbar-thumb {
+    background: var(--col-accent);
+    border-radius: 3px;
+}
+
+/* Header - Using spacing system */
+.pdm-header {
+    border-bottom: 1px solid #E8E8E8;
+    padding-bottom: var(--pdm-space-md);
+    margin-bottom: var(--pdm-space-md);
+}
+
+.pdm-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--col-primario);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+/* Rating */
+.pdm-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.pdm-stars {
+    color: #FFA726;
+    font-size: 1rem;
+    display: flex;
+    gap: 0.25rem;
+}
+
+.pdm-rating-text {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Badges */
+.pdm-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pdm-badge {
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pdm-badge-category {
+    background: linear-gradient(135deg, var(--col-accent) 0%, #d4c0a8 100%);
+    color: var(--col-primario);
+}
+
+.pdm-badge-destination {
+    background: var(--col-primario);
+    color: white;
+}
+
+.pdm-badge-condition {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #81C784;
+}
+
+/* Stock Indicator - Using spacing system */
+.pdm-stock {
+    padding: var(--pdm-space-sm);
+    border-radius: var(--pdm-border-radius-sm);
+    margin-bottom: var(--pdm-space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--pdm-space-sm);
+    font-weight: 600;
+}
+
+.pdm-stock.in-stock {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.pdm-stock.low-stock {
+    background: #FFF8E1;
+    color: #F57C00;
+}
+
+.pdm-stock.out-of-stock {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+.pdm-stock i {
+    font-size: 1.25rem;
+}
+
+/* Description - Using spacing system */
+.pdm-description {
+    margin-bottom: var(--pdm-space-md);
+}
+
+.pdm-description p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: var(--pdm-space-sm);
+}
+
+.pdm-expand-btn {
+    background: none;
+    border: none;
+    color: var(--col-primario);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: color 200ms ease-out;
+    padding: 0;
+}
+
+.pdm-expand-btn:hover {
+    color: var(--col-accent-gold);
+}
+
+.pdm-expand-btn i {
+    transition: transform 200ms ease-out;
+}
+
+.pdm-expand-btn.is-expanded i {
+    transform: rotate(180deg);
+}
+
+.pdm-description-full {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms ease-out;
+}
+
+.pdm-description-full.is-expanded {
+    max-height: 500px;
+}
+
+/* Selector Groups - Using spacing system */
+.pdm-selector-group {
+    margin-bottom: var(--pdm-space-md);
+}
+
+.pdm-selector-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--pdm-space-sm);
+}
+
+.pdm-selector-label > span {
+    font-weight: 600;
+    color: var(--col-primario);
+    font-size: 0.95rem;
+}
+
+.pdm-size-guide {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 200ms ease-out;
+    padding: 0;
+}
+
+.pdm-size-guide:hover {
+    color: var(--col-primario);
+}
+
+/* Size Options - Minimum touch target 44px */
+.pdm-size-options {
+    display: flex;
+    gap: var(--pdm-space-xs);
+    flex-wrap: wrap;
+}
+
+.pdm-size-option {
+    min-width: 60px;
+    min-height: var(--pdm-min-touch);
+    padding: var(--pdm-space-sm) var(--pdm-space-md);
+    border: 1.5px solid #D0D0D0;
+    background: white;
+    border-radius: var(--pdm-border-radius-sm);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 200ms ease-out;
+    color: var(--col-primario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pdm-size-option:hover:not(.is-disabled) {
+    border-color: var(--col-primario);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pdm-size-option.is-selected {
+    border-color: var(--col-primario);
+    background: var(--col-primario);
+    color: white;
+}
+
+.pdm-size-option.is-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.pdm-size-stock-hint {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Color Options - Minimum touch target 44px */
+.pdm-color-options {
+    display: flex;
+    gap: var(--pdm-space-sm);
+    flex-wrap: wrap;
+}
+
+.pdm-color-option {
+    width: 48px;
+    height: 48px;
+    min-width: var(--pdm-min-touch);
+    min-height: var(--pdm-min-touch);
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 200ms ease-out;
+    position: relative;
+}
+
+.pdm-color-option:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pdm-color-option.is-selected {
+    border-color: var(--col-primario);
+    box-shadow: 0 0 0 3px rgba(58, 76, 105, 0.15);
+}
+
+.pdm-color-option::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+}
+
+.pdm-color-option.is-selected::after {
+    opacity: 1;
+}
+
+.pdm-color-name {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Quantity Selector - Minimum touch target 44px */
+.pdm-quantity {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid #D0D0D0;
+    border-radius: var(--pdm-border-radius-sm);
+    overflow: hidden;
+}
+
+.pdm-qty-btn {
+    width: 48px;
+    height: 48px;
+    min-width: var(--pdm-min-touch);
+    min-height: var(--pdm-min-touch);
+    border: none;
+    background: white;
+    cursor: pointer;
+    transition: background 200ms ease-out;
+    color: var(--col-primario);
+    font-size: 1rem;
+}
+
+.pdm-qty-btn:hover:not(:disabled) {
+    background: var(--col-secondario);
+}
+
+.pdm-qty-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#pdmQtyInput {
+    width: 70px;
+    height: 48px;
+    min-height: var(--pdm-min-touch);
+    border: none;
+    border-left: 1px solid #E0E0E0;
+    border-right: 1px solid #E0E0E0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--col-primario);
+}
+
+/* Highlights - Using spacing system */
+.pdm-highlights {
+    margin-bottom: var(--pdm-space-md);
+}
+
+.pdm-highlights h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--col-primario);
+    margin-bottom: var(--pdm-space-sm);
+}
+
+.pdm-highlights ul {
+    list-style: none;
+}
+
+.pdm-highlights li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.pdm-highlights li i {
+    color: #4CAF50;
+    font-size: 0.85rem;
+}
+
+/* Services - Using spacing system */
+.pdm-services {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pdm-space-sm);
+    padding: var(--pdm-space-md);
+    background: var(--col-secondario);
+    border-radius: var(--pdm-border-radius-sm);
+    margin-bottom: var(--pdm-space-sm);
+}
+
+.pdm-service-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--pdm-space-sm);
+}
+
+.pdm-service-item i {
+    font-size: 1.5rem;
+    color: var(--col-accent-gold);
+    margin-top: 0.15rem;
+}
+
+.pdm-service-item strong {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--col-primario);
+    margin-bottom: 0.15rem;
+}
+
+.pdm-service-item p {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0;
+}
+
+/* ============================
+   CTA BUTTON
+   Minimum touch target 44px
+   ============================ */
+
+.pdm-cta {
+    padding: var(--pdm-space-md) var(--pdm-space-xl);
+    border-top: 1px solid #E8E8E8;
+    background: white;
+}
+
+.pdm-add-to-cart {
+    width: 100%;
+    min-height: calc(var(--pdm-min-touch) + var(--pdm-space-xs));
+    padding: var(--pdm-space-sm) var(--pdm-space-xl);
+    border: none;
+    background: linear-gradient(135deg, var(--col-accent) 0%, var(--col-accent-gold) 100%);
+    color: var(--col-primario);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: var(--pdm-border-radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pdm-space-sm);
+    transition: all 250ms ease-out;
+    box-shadow: 0 4px 16px rgba(201, 168, 130, 0.3);
+}
+
+.pdm-add-to-cart:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 168, 130, 0.4);
+}
+
+.pdm-add-to-cart:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pdm-add-to-cart.is-loading {
+    pointer-events: none;
+}
+
+.pdm-add-to-cart.is-loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================
+   TOAST NOTIFICATION
+   Using spacing system
+   ============================ */
+
+.pdm-toast {
+    position: fixed;
+    bottom: -100px;
+    right: var(--pdm-space-lg);
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: var(--pdm-space-sm) var(--pdm-space-xl);
+    border-radius: var(--pdm-border-radius-md);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: var(--pdm-space-sm);
+    font-weight: 600;
+    z-index: 10000;
+    transition: bottom 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdm-toast i {
+    font-size: 1.5rem;
+}
+
+.pdm-toast.is-visible {
+    bottom: var(--pdm-space-lg);
+}
+
+/* ============================
+   RESPONSIVE DESIGN
+   Breakpoints: Mobile (<768px), Tablet (768-1024px), Desktop (>1024px)
+   ============================ */
+
+/* Tablet (768px - 1024px)
+   Width: 90vw, max 900px
+   Stacked layout for better readability
+   Padding: 1.5rem (24px)
+*/
+@media (max-width: 1024px) {
+    .pdm-container {
+        width: 90vw;
+        max-width: 900px;
+        max-height: 90vh;
+    }
+
+    .pdm-content {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+    }
+
+    .pdm-gallery {
+        max-height: 50vh;
+    }
+
+    .pdm-thumbnails {
+        padding: var(--pdm-space-sm) var(--pdm-space-md);
+    }
+
+    .pdm-info-scroll {
+        padding: var(--pdm-space-md) var(--pdm-space-md) var(--pdm-space-sm);
+    }
+}
+
+/* Mobile (<768px)
+   Full-screen experience
+   Slide-up animation
+   Padding: 1.5rem (24px)
+   Sticky CTA at bottom
+   Gallery: 40-45% of viewport height
+*/
+@media (max-width: 768px) {
+    .pdm-container {
+        width: 100%;
+        max-width: none;
+        max-height: 100vh;
+        height: 100%;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+        transform: translateY(100%);
+    }
+
+    .pdm-modal.is-open .pdm-container {
+        transform: translateY(0);
+    }
+
+    .pdm-close {
+        top: var(--pdm-space-sm);
+        right: var(--pdm-space-sm);
+        width: var(--pdm-min-touch);
+        height: var(--pdm-min-touch);
+        font-size: 1.1rem;
+    }
+
+    .pdm-content {
+        height: 100%;
+    }
+
+    .pdm-gallery {
+        max-height: 45vh;
+    }
+
+    .pdm-main-image-wrapper {
+        touch-action: pan-x;
+    }
+
+    .pdm-zoom-hint {
+        display: none;
+    }
+
+    /* Hide thumbnails, show dots on mobile */
+    .pdm-thumbnails {
+        display: none;
+    }
+
+    .pdm-dots {
+        display: flex;
+    }
+
+    .pdm-info-scroll {
+        padding: var(--pdm-space-md) var(--pdm-space-md) var(--pdm-space-sm);
+    }
+
+    .pdm-title {
+        font-size: 1.5rem;
+    }
+
+    /* Sticky CTA at bottom */
+    .pdm-cta {
+        position: sticky;
+        bottom: 0;
+        padding: var(--pdm-space-sm) var(--pdm-space-md);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    }
+
+    .pdm-add-to-cart {
+        font-size: 1rem;
+        padding: var(--pdm-space-sm) var(--pdm-space-md);
+    }
+
+    .pdm-toast {
+        right: var(--pdm-space-sm);
+        left: var(--pdm-space-sm);
+        bottom: -120px;
+    }
+
+    .pdm-toast.is-visible {
+        bottom: var(--pdm-space-sm);
+    }
+}
+
+/* Small Mobile (<480px)
+   Compact spacing for smaller screens
+   Maintain minimum touch targets (44px)
+*/
+@media (max-width: 480px) {
+    .pdm-size-options {
+        gap: var(--pdm-space-xs);
+    }
+
+    .pdm-size-option {
+        min-width: 50px;
+        padding: var(--pdm-space-sm) var(--pdm-space-sm);
+        font-size: 0.85rem;
+    }
+
+    .pdm-color-option {
+        width: var(--pdm-min-touch);
+        height: var(--pdm-min-touch);
+    }
+
+    .pdm-services {
+        padding: var(--pdm-space-sm);
+    }
+
+    .pdm-service-item i {
+        font-size: 1.25rem;
+    }
+}
+
+/* ============================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================ */
+
+/* Focus visible states */
+*:focus-visible {
+    outline: 2px solid var(--col-accent);
+    outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .pdm-backdrop {
+        background: rgba(0, 0, 0, 0.9);
+    }
+
+    .pdm-size-option,
+    .pdm-qty-btn,
+    .pdm-add-to-cart {
+        border-width: 2px;
+    }
+}
