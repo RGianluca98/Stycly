@@ -846,6 +846,34 @@ img { max-width: 100%; height: auto; display: block; }
    Breakpoints ottimizzati per tutti i dispositivi
    ============================ */
 
+/* Extra Large Screens (>1600px) - Prevent content stretching */
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  .nav-container {
+    max-width: 1600px;
+  }
+
+  .hero-split {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .hero-text-area {
+    padding: 4rem 6rem;
+  }
+
+  .hero-text-content {
+    max-width: 650px;
+  }
+
+  .hero-title-new {
+    font-size: 4.5rem;
+  }
+}
+
 /* Large Desktop (>1400px) - Contenuto centrato con max-width */
 @media (min-width: 1400px) {
   .container {
@@ -853,7 +881,11 @@ img { max-width: 100%; height: auto; display: block; }
   }
 
   .nav-container {
-    max-width: 1320px;
+    max-width: 1400px;
+  }
+
+  .hero-text-area {
+    padding: 4rem 5rem;
   }
 }
 
