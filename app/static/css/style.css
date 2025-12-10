@@ -16,8 +16,8 @@
   --col-accent-gold: #C9A882;     /* Oro tenue - dettagli premium */
 
   /* Tipografia */
-  --font-main: 'Poppins', Arial, sans-serif;
-  --font-title: 'Fredoka', 'Poppins', Arial, sans-serif;
+  --font-main: 'Quicksand', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --font-title: 'Baloo 2', 'Quicksand', Arial, sans-serif;
 }
 * {
   margin: 0;
