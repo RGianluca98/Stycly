@@ -93,7 +93,14 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .nav-logo .logo-img:hover { transform: scale(1.05); }
 .nav-menu { display: flex; gap: 2rem; align-items: center; }
-.nav-link { font-size: 0.9rem; font-weight: 500; color: var(--col-primario); position: relative; padding: 0.5rem 0; letter-spacing: 0.5px; }
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--col-navy-dark);
+  position: relative;
+  padding: 0.5rem 0;
+  letter-spacing: 0.5px;
+}
 .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--col-accent); transition: width 0.3s ease; }
 .nav-link:hover::after, .nav-link.active::after { width: 100%; }
 .nav-link.active { color: var(--col-accent); }
