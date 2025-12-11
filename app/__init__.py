@@ -23,10 +23,20 @@ def create_app():
     # Configuration
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
-    # Database configuration with absolute path
-    basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-    db_path = os.path.join(basedir, 'stycly.db')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', f'sqlite:///{db_path}')
+    # Database configuration
+    # Priority: DATABASE_URL (Render/Heroku) > DATABASE_URI > SQLite local
+    database_url = os.getenv('DATABASE_URL') or os.getenv('DATABASE_URI')
+
+    if not database_url:
+        # Local development: use SQLite with absolute path
+        basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+        db_path = os.path.join(basedir, 'stycly.db')
+        database_url = f'sqlite:///{db_path}'
+    elif database_url.startswith('postgres://'):
+        # Render uses postgres:// but SQLAlchemy needs postgresql://
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file upload
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
