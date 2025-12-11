@@ -19,10 +19,14 @@ mail = Mail()
 def create_app():
     """Application factory pattern"""
     app = Flask(__name__)
-    
+
     # Configuration
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'sqlite:///stycly.db')
+
+    # Database configuration with absolute path
+    basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+    db_path = os.path.join(basedir, 'stycly.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', f'sqlite:///{db_path}')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file upload
     app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static', 'uploads')
