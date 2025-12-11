@@ -61,8 +61,8 @@
 }
 
 /* Modal Container
-   Desktop: clamp(900px, 85vw, 1200px)
-   Aspect ratio: ~16:9 for visual balance
+   Desktop: max 1100px width, max 85vh height
+   Responsive: adapta a diversi viewport
    Border radius: 16px (--pdm-border-radius-lg)
 */
 .pdm-container {
@@ -70,8 +70,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.95);
-    width: clamp(900px, 85vw, 1200px);
-    max-height: clamp(600px, 85vh, 800px);
+    width: min(90vw, 1100px);
+    max-height: 85vh;
     background: var(--col-white);
     border-radius: var(--pdm-border-radius-lg);
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
@@ -117,19 +117,21 @@
 
 /* ============================
    MODAL CONTENT LAYOUT
-   Desktop: 55/45 split (golden ratio inspired)
-   Visual balance: 60% content / 40% whitespace
+   Desktop: 45/55 split ottimizzato
+   Mobile: colonna singola con image compatta
    ============================ */
 
 .pdm-content {
     display: grid;
-    grid-template-columns: 55% 45%;
+    grid-template-columns: 45% 55%;
     height: 100%;
-    max-height: clamp(600px, 85vh, 800px);
+    max-height: 85vh;
+    overflow: hidden;
 }
 
 /* ============================
    GALLERY SECTION (LEFT)
+   Limita l'altezza per garantire scroll nella sezione info
    ============================ */
 
 .pdm-gallery {
@@ -138,12 +140,16 @@
     flex-direction: column;
     overflow: hidden;
     position: relative;
+    max-height: 85vh;
 }
 
 .pdm-main-image-wrapper {
     flex: 1;
     position: relative;
     overflow: hidden;
+    /* Limita altezza per evitare che domini il layout */
+    max-height: calc(85vh - 140px); /* 140px per thumbnails e padding */
+    min-height: 300px;
 }
 
 .pdm-main-image {
@@ -159,6 +165,8 @@
 .pdm-main-image img {
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -278,6 +286,7 @@
 
 /* ============================
    INFO SECTION (RIGHT)
+   Sempre scrollabile indipendentemente dalla gallery
    ============================ */
 
 .pdm-info {
@@ -285,12 +294,17 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-height: 85vh;
+    overflow: hidden;
 }
 
 .pdm-info-scroll {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: var(--pdm-space-xl) var(--pdm-space-xl) var(--pdm-space-sm);
+    /* Smooth scroll per migliore UX */
+    scroll-behavior: smooth;
 }
 
 .pdm-info-scroll::-webkit-scrollbar {
@@ -319,26 +333,6 @@
     color: var(--col-primario);
     margin-bottom: 0.75rem;
     line-height: 1.3;
-}
-
-/* Rating */
-.pdm-rating {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-}
-
-.pdm-stars {
-    color: #FFA726;
-    font-size: 1rem;
-    display: flex;
-    gap: 0.25rem;
-}
-
-.pdm-rating-text {
-    color: #666;
-    font-size: 0.9rem;
 }
 
 /* Badges */
@@ -782,28 +776,39 @@
    ============================ */
 
 /* Tablet (768px - 1024px)
-   Width: 90vw, max 900px
-   Stacked layout for better readability
-   Padding: 1.5rem (24px)
+   Layout colonna singola: immagine sopra, info sotto
+   Gallery: max 45vh per lasciare spazio alle info
+   Padding ottimizzato: 1.5rem (24px)
 */
 @media (max-width: 1024px) {
     .pdm-container {
-        width: 90vw;
-        max-width: 900px;
-        max-height: 90vh;
+        width: 92vw;
+        max-width: 750px;
+        max-height: 92vh;
     }
 
     .pdm-content {
         grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
         overflow-y: auto;
     }
 
     .pdm-gallery {
-        max-height: 50vh;
+        max-height: 45vh;
+        min-height: 300px;
+    }
+
+    .pdm-main-image-wrapper {
+        max-height: calc(45vh - 120px);
+        min-height: 250px;
     }
 
     .pdm-thumbnails {
         padding: var(--pdm-space-sm) var(--pdm-space-md);
+    }
+
+    .pdm-info {
+        max-height: none;
     }
 
     .pdm-info-scroll {
@@ -812,18 +817,17 @@
 }
 
 /* Mobile (<768px)
-   Full-screen experience
+   Full-screen experience ottimizzata
+   Gallery: 40vh massimo per garantire spazio alle info
    Slide-up animation
-   Padding: 1.5rem (24px)
    Sticky CTA at bottom
-   Gallery: 40-45% of viewport height
 */
 @media (max-width: 768px) {
     .pdm-container {
         width: 100%;
         max-width: none;
         max-height: 100vh;
-        height: 100%;
+        height: 100dvh; /* dvh per mobile browsers */
         border-radius: 0;
         top: 0;
         left: 0;
@@ -840,17 +844,23 @@
         width: var(--pdm-min-touch);
         height: var(--pdm-min-touch);
         font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.98);
+        z-index: 20;
     }
 
     .pdm-content {
         height: 100%;
+        grid-template-rows: auto 1fr;
     }
 
     .pdm-gallery {
-        max-height: 45vh;
+        max-height: 40vh;
+        min-height: 280px;
     }
 
     .pdm-main-image-wrapper {
+        max-height: calc(40vh - 100px);
+        min-height: 220px;
         touch-action: pan-x;
     }
 
@@ -867,21 +877,28 @@
         display: flex;
     }
 
+    .pdm-info {
+        max-height: none;
+    }
+
     .pdm-info-scroll {
         padding: var(--pdm-space-md) var(--pdm-space-md) var(--pdm-space-sm);
+        /* Compensate for sticky CTA */
+        padding-bottom: calc(var(--pdm-min-touch) + var(--pdm-space-md) * 2);
     }
 
     .pdm-title {
         font-size: 1.5rem;
     }
 
-    /* Sticky CTA at bottom */
+    /* Sticky CTA at bottom - always visible */
     .pdm-cta {
         position: sticky;
         bottom: 0;
         padding: var(--pdm-space-sm) var(--pdm-space-md);
-        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
         z-index: 10;
+        background: white;
     }
 
     .pdm-add-to-cart {
